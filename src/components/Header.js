@@ -6,7 +6,7 @@ import '../style/Header.css';
 class Header extends Component {
   render() {
     return (
-      <Container fluid='md' maxwidt='sm'>
+      <Container fluid='md'>
         <nav>
           <h1>My All Times Favorite Movies LIST</h1>
           <ul>

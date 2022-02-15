@@ -1,3 +1,46 @@
-nav {
-  background-color: blue;
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin: 2rem;
+}
+
+nav ul {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+  list-style: none;
+  border-radius: 1rem;
+}
+
+nav ul li {
+  margin: 0 1rem;
+  background-color: rgba(240, 230, 140, 0.5);
+  border: 3px solid darkslategrey;
+  border-radius: 1rem;
+  text-align: center;
+  /* padding: 1rem 2rem; */
+  transition: all 400ms ease-in-out;
+}
+
+nav ul li:hover {
+  background: linear-gradient(rgba(128, 0, 128, 0.5), rgba(240, 230, 140, 0.5));
+  color: white;
+  border: 3px solid darkgrey;
+}
+
+nav ul li a {
+  font-family: 'Arial';
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  /* padding: 2rem 2rem; */
+
+  /* color: navy; */
+}
+
+a:focus,
+a:visited {
+  color: darkslategrey;
 }
