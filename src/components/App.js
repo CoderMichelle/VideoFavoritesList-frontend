@@ -48,7 +48,7 @@ class App extends Component {
           <Route path='/' element={
             <React.Fragment>
               <Form hoistInputFromMoviesForm={this.hoistInputFromMoviesForm} />
-              {(this.state.resultsFromServer.length > 0) ? <MyMoviesList results={this.state.resultsFromServer} /> : ''}
+              {(this.state.resultsFromServer.length > 0) ? <MoviesList results={this.state.resultsFromServer} /> : ''}
             </React.Fragment>
           } />
           <Route path='about' element={<About />} />
