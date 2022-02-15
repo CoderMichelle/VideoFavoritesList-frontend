@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Container from 'react-bootstrap/Container';
+import '../style/Footer.css';
 
-class Footer extends Component {
+class Footer extends React.Component {
   render() {
     return (
-      <div>Footer</div>
+      <Container fluid='md' maxwidth='sm'>
+        <h3>Copyright &copy; 2022 Michelle Pannosch</h3>
+      </Container>
     );
   }
 }
