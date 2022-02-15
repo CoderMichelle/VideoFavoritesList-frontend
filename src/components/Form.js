@@ -36,12 +36,10 @@ class Form extends React.Component {
   render() {
     return (
       <Container fluid='md' maxwidth='sm'>
-        <h3>Form</h3>
-        <h3>
-          and here is just a reminder of what you typed and what we are
-          currently searching for:
-        </h3>
-        <p id='user-input'>nothing yet</p>
+        <h5>
+          and here is what we are currently searching for:
+        </h5>
+        <h3 id='user-input'>nothing yet</h3><br /><br />
         <form id='movies-search-form' onSubmit={this.handleSubmit}>
           <fieldset>
             <legend>
