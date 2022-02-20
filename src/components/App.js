@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { withAuth0 } from '@auth0/auth0-react';
 import '../style/App.css';
 import Header from './Header.js';
 import Form from './Form.js';
@@ -10,6 +11,7 @@ import AboutMichellePannosch from './AboutMichellePannosch.js';
 import MovieResultsFromAPI from './MoviesList.js';
 import ApiLoadingModal from './Modal.js';
 import StoredMoviesList from './StoredMoviesList.js';
+
 
 import axios from 'axios';
 
@@ -108,9 +110,16 @@ class App extends Component {
   };
 
   render() {
+    const { user, isAuthenticated } = this.props.auth0;
+    console.log('here is user', user);
+    console.log('here is this.props.auth0', this.props.auth0);
     return (
       <React.Fragment>
-        <Header />
+        <Header
+          // loginUser={this.loginUser}
+          // logoutUser={this.logoutUser}
+          isAuthenticated={isAuthenticated}
+        />
         {this.state.error ? (
           <Alert alertMessage={this.state.errorMessage} />
         ) : (
@@ -119,7 +128,10 @@ class App extends Component {
         <Routes>
           <Route path='/' element={
             <React.Fragment>
-              <Form hoistInputFromMoviesForm={this.hoistInputFromMoviesForm} />
+              <Form
+                hoistInputFromMoviesForm={this.hoistInputFromMoviesForm}
+                user={user}
+              />
               {this.state.loading ? (
                 <ApiLoadingModal
                   openModal={this.openModal}
@@ -144,10 +156,13 @@ class App extends Component {
               )}
             </React.Fragment>
           } />
-          <Route path='about' element={<About />} />
-          <Route path='aboutMichellePannosch' element={<AboutMichellePannosch />} />
+
+          <Route path='/about' element={<About />} />
+
+          <Route path='/aboutMichellePannosch' element={<AboutMichellePannosch />} />
+
           <Route
-            path='MoviesList'
+            path='/MoviesList'
             element={
               <StoredMoviesList
                 list={this.state.myFavoriteMoviesList}
@@ -164,4 +179,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withAuth0(App);

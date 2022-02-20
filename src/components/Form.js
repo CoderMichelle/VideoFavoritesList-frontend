@@ -36,17 +36,18 @@ class Form extends React.Component {
   render() {
     return (
       <Container fluid='md' maxwidth='sm'>
-        <h5>
-          and here is what we are currently searching for:
-        </h5>
-        <h3 id='user-input'>nothing yet</h3><br /><br />
+        {this.props.user ? <h3>hello, {this.props.user.name} !</h3> : ''}
+        <h3>
+          what we are currently searching for:{' '}
+          <span id='user-input'>nothing yet</span>
+        </h3>
+        <br />
+        <br />
         <form id='movies-search-form' onSubmit={this.handleSubmit}>
           <fieldset>
             <legend>
               Please type a search term in the input field to look for movies
             </legend>
-            {/* <label htmlFor='movies-input'>enter your movie search here</label>
-            <br /> */}
             <input
               type='text'
               id='movies-input'
