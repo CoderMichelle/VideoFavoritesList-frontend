@@ -4,10 +4,10 @@ import '../style/Movie.css';
 
 class Movie extends Component {
   render() {
-    console.log(
-      'we are inside of movie.js and here is the props',
-      this.props.results
-    );
+    // console.log(
+    //   'we are inside of movie.js and here is the props',
+    //   this.props.results
+    // );
     return (
       <div className='movieCard'>
         <Card>

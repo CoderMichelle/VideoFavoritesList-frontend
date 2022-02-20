@@ -5,6 +5,7 @@ import Header from './Header.js';
 import Form from './Form.js';
 import Footer from './Footer.js';
 import About from './About.js';
+import Alert from './Alert.js';
 import AboutMichellePannosch from './AboutMichellePannosch.js';
 import MoviesList from './MoviesList.js';
 
@@ -16,24 +17,54 @@ class App extends Component {
     this.state = {
       searchInput: '',
       error: false,
+      errorMessage: '',
       loading: false,
+      showModal: false,
+      saving2List: false,
       hasSearched: false,
       resultsFromServer: [],
       status: null,
-      movieResultsShowing: false
+      movieResultsShowing: false,
+      myFavoriteMoviesList: [
+        { title: 'firstSampleObject', hereIsFirstSampleObj: true }
+      ]
     };
   }
 
   hoistInputFromMoviesForm = (inputfromform) => {
-    this.setState({ searchInput: inputfromform, hasSearched: true });
-    // console.log('we are inside of App and here is inputfromform', inputfromform);
-    this.apiCallTMDB(inputfromform);
+    if (inputfromform === '') {
+      alert('Please enter a movie you d like to search for');
+    } else {
+      this.setState({
+        searchInput: inputfromform,
+        hasSearched: true,
+        error: false,
+        errorMessage: '',
+      });
+      // console.log('we are inside of App and here is inputfromform', inputfromform);
+      this.apiCallTMDB(inputfromform);
+    }
   };
 
   apiCallTMDB = async (searchInput) => {
-    let resultsFromServer = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER}/movies?movieName=${searchInput}`);
-    console.log('hurray we contacted the server and here is what she said:', resultsFromServer);
-    this.setState({ resultsFromServer: resultsFromServer.data, status: resultsFromServer.status });
+    this.setState({ loading: true });
+    try {
+      let resultsFromServer = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER}/movies?movieName=${searchInput}`);
+      console.log('hurray we contacted the server and here is what she said:', resultsFromServer);
+      if (resultsFromServer.status === 200) {
+        this.setState({
+          resultsFromServer: resultsFromServer.data,
+          status: resultsFromServer.status
+        });
+      }
+    } catch (error) {
+      console.log('we are inside of apiCallTMDB error catch');
+      this.setState({
+        error: true,
+        errorMessage: `There was an error contacting the server: ${error.message ? error.message : 'and the error message doesnt work either'}`
+      });
+    }
+    setTimeout(() => this.setState({ loading: false }), 1000);
   };
 
   toggleLoading = () => {
@@ -44,6 +75,11 @@ class App extends Component {
     return (
       <React.Fragment>
         <Header />
+        {this.state.error ? (
+          <Alert alertMessage={this.state.errorMessage} />
+        ) : (
+          ''
+        )}
         <Routes>
           <Route path='/' element={
             <React.Fragment>
