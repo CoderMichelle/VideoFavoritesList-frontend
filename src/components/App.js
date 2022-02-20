@@ -7,8 +7,9 @@ import Footer from './Footer.js';
 import About from './About.js';
 import Alert from './Alert.js';
 import AboutMichellePannosch from './AboutMichellePannosch.js';
-import MoviesList from './MoviesList.js';
+import MovieResultsFromAPI from './MoviesList.js';
 import ApiLoadingModal from './Modal.js';
+import StoredMoviesList from './StoredMoviesList.js';
 
 import axios from 'axios';
 
@@ -96,6 +97,16 @@ class App extends Component {
     this.setState({ showModal: false });
   };
 
+  addComment = (comment, movieObj) => {
+    let newFavoriteMoviesList = [...this.state.myFavoriteMoviesList];
+    console.log('newFavoriteMovieList before insertion', newFavoriteMoviesList);
+    let indexOfMovie = newFavoriteMoviesList.indexOf(movieObj);
+    let newMovieObj = { ...movieObj, comment: comment };
+    newFavoriteMoviesList[indexOfMovie] = newMovieObj;
+    console.log('newFavoriteMovieList after insertion', newFavoriteMoviesList);
+    this.setState({ myFavoriteMoviesList: newFavoriteMoviesList });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -120,12 +131,32 @@ class App extends Component {
                 ''
               )}
 
-              {(this.state.resultsFromServer.length > 0) ? <MoviesList results={this.state.resultsFromServer} /> : ''}
+              {this.state.resultsFromServer.length > 0 ? (
+                <MovieResultsFromAPI
+                  results={this.state.resultsFromServer}
+                  add={this.addToFavoriteMoviesLIST}
+                  saving2List={this.state.saving2List}
+                  openModal={this.openModal}
+                  closeModal={this.closeModal}
+                />
+              ) : (
+                ''
+              )}
             </React.Fragment>
           } />
           <Route path='about' element={<About />} />
           <Route path='aboutMichellePannosch' element={<AboutMichellePannosch />} />
-          <Route path='MoviesList' element={<MoviesList results={this.state.resultsFromServer} toggleLoading={this.toggleLoading} />} />
+          <Route
+            path='MoviesList'
+            element={
+              <StoredMoviesList
+                list={this.state.myFavoriteMoviesList}
+                add={this.addToFavoriteMoviesLIST}
+                remove={this.removeFromFavoriteMoviesLIST}
+                addComment={this.addComment}
+              />
+            }
+          />
         </Routes>
         <Footer />
       </React.Fragment>
