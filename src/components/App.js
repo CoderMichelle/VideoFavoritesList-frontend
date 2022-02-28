@@ -145,6 +145,7 @@ class App extends Component {
                     makeAnyRequest={this.makeAnyRequest}
                     hoistResultsFromDB={this.hoistResultsFromDB}
                     moviesDB={this.state.moviesDB}
+                    hoistError={this.hoistError}
                   />
                 </>
               }
