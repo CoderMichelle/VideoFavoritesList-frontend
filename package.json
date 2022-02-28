@@ -6,7 +6,7 @@
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
-    "build": "npm run build"
+    "build": "react-scripts build"
   },
   "keywords": [],
   "author": "",
