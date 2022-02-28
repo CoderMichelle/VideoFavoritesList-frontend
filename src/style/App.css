@@ -1,0 +1,12 @@
+.App {
+  text-align: center;
+}
+
+
+
+div.testButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
