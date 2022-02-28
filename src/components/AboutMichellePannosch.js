@@ -1,19 +1,11 @@
 import React from 'react';
-// import { Container, Spinner } from 'react-bootstrap';
-// import { useAuth0 } from '@auth0/auth0-react';
 import { Container } from 'react-bootstrap';
 import github from '../assets/gh.png';
 import linkedin from '../assets/li.png';
 import '../style/AboutMichellePannosch.css';
 
 const AboutMichellePannosch = () => {
-  // const { isAuthenticated, isLoading } = useAuth0();
-  // if (isLoading) {
-  //   return <Spinner animation='border' />;
-  // }
-
   return (
-    // isAuthenticated && (
     <Container fluid='md' maxwidth='sm'>
       <h2>Hover over the image to learn more about Michelle</h2>
       <section className='about-us-wrapper'>
@@ -55,7 +47,6 @@ const AboutMichellePannosch = () => {
       </section>
     </Container>
   );
-  // );
 };
 
 export default AboutMichellePannosch;

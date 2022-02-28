@@ -62,7 +62,6 @@ h2 {
 }
 .about-card .back {
   transform: rotateY(180deg);
-  /* background: linear-gradient($purple, $yellow); */
   background: linear-gradient(purple, khaki);
   color: white;
   padding: 10px;

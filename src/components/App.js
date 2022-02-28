@@ -13,6 +13,8 @@ import MovieResultsFromAPI from './MoviesList.js';
 import ApiLoadingModal from './Modal.js';
 import StoredMoviesList from './StoredMoviesList.js';
 
+import LoginModal from './LoginModal';
+
 
 import axios from 'axios';
 
@@ -20,6 +22,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loginModal: true,
       searchInput: '',
       error: false,
       errorMessage: '',
@@ -122,72 +125,79 @@ class App extends Component {
   };
 
   render() {
-    const { user, isAuthenticated } = this.props.auth0;
-    console.log('here is user', user);
-    console.log('here is this.props.auth0', this.props.auth0);
-    return (
-      <React.Fragment>
-        <Header
-          loginUser={this.loginUser}
-          logoutUser={this.logoutUser}
-          isAuthenticated={isAuthenticated}
+    const { isAuthenticated, user } = this.props.auth0;
+    if (!isAuthenticated) {
+      return (
+        <LoginModal
+          openModal={() => this.setState({ loginModal: true })}
+          closeModal={() => this.setState({ loginModal: false })}
         />
-        {this.state.error ? (
-          <Alert alertMessage={this.state.errorMessage} />
-        ) : (
-          ''
-        )}
-        <Routes>
-          <Route path='/' element={
-            <React.Fragment>
-              <Form
-                hoistInputFromMoviesForm={this.hoistInputFromMoviesForm}
-                user={user}
-              />
-              {this.state.loading ? (
-                <ApiLoadingModal
-                  openModal={this.openModal}
-                  closeModal={this.closeModal}
-                  modalHeaderText={'contacting IMDB'}
-                  modalLoadingText={'LOADING YOUR RESULTS'}
-                />
-              ) : (
-                ''
-              )}
-
-              {this.state.resultsFromServer.length > 0 ? (
-                <MovieResultsFromAPI
-                  results={this.state.resultsFromServer}
-                  add={this.addToFavoriteMoviesLIST}
-                  saving2List={this.state.saving2List}
-                  openModal={this.openModal}
-                  closeModal={this.closeModal}
-                />
-              ) : (
-                ''
-              )}
-            </React.Fragment>
-          } />
-
-          <Route path='/about' element={<About />} />
-
-          <Route path='/aboutMichellePannosch' element={<AboutMichellePannosch />} />
-
-          <Route
-            path='/MoviesList'
-            element={
-              <StoredMoviesList
-                list={this.state.myFavoriteMoviesList}
-                add={this.addToFavoriteMoviesLIST}
-                remove={this.removeFromFavoriteMoviesLIST}
-                addComment={this.addComment}
-              />
-            }
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <Header
+            loginUser={this.loginUser}
+            logoutUser={this.logoutUser}
+            isAuthenticated={isAuthenticated}
           />
-        </Routes>
-        <Footer />
-      </React.Fragment>
-    );
+          {this.state.error ? (
+            <Alert alertMessage={this.state.errorMessage} />
+          ) : (
+            ''
+          )}
+          <Routes>
+            <Route path='/' element={
+              <React.Fragment>
+                <Form
+                  hoistInputFromMoviesForm={this.hoistInputFromMoviesForm}
+                  user={user}
+                />
+                {this.state.loading ? (
+                  <ApiLoadingModal
+                    openModal={this.openModal}
+                    closeModal={this.closeModal}
+                    modalHeaderText={'contacting IMDB'}
+                    modalLoadingText={'LOADING YOUR RESULTS'}
+                  />
+                ) : (
+                  ''
+                )}
+
+                {this.state.resultsFromServer.length > 0 ? (
+                  <MovieResultsFromAPI
+                    results={this.state.resultsFromServer}
+                    add={this.addToFavoriteMoviesLIST}
+                    saving2List={this.state.saving2List}
+                    openModal={this.openModal}
+                    closeModal={this.closeModal}
+                  />
+                ) : (
+                  ''
+                )}
+              </React.Fragment>
+            } />
+
+            <Route path='/about' element={<About />} />
+
+            <Route path='/aboutMichellePannosch' element={<AboutMichellePannosch />} />
+
+            <Route
+              path='/MoviesList'
+              element={
+                <StoredMoviesList
+                  list={this.state.myFavoriteMoviesList}
+                  add={this.addToFavoriteMoviesLIST}
+                  remove={this.removeFromFavoriteMoviesLIST}
+                  addComment={this.addComment}
+                />
+              }
+            />
+          </Routes>
+          <Footer />
+        </React.Fragment>
+      );
+    }
   }
 }
 
