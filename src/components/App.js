@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { withAuth0 } from '@auth0/auth0-react';
 import '../style/App.css';
+
 import Header from './Header.js';
 import Form from './Form.js';
 import Footer from './Footer.js';
@@ -28,6 +29,7 @@ class App extends Component {
       hasSearched: false,
       resultsFromServer: [],
       status: null,
+      user: null,
       movieResultsShowing: false,
       myFavoriteMoviesList: [
         { title: 'firstSampleObject', hereIsFirstSampleObj: true }
@@ -99,6 +101,16 @@ class App extends Component {
     this.setState({ showModal: false });
   };
 
+
+  loginUser = userFromLogoutBtn => {
+    this.setState({ user: userFromLogoutBtn });
+  };
+
+  logoutUser = () => {
+    console.log('we are loggin OUT the user:', this.state.user);
+    this.setState({ user: null });
+  };
+
   addComment = (comment, movieObj) => {
     let newFavoriteMoviesList = [...this.state.myFavoriteMoviesList];
     console.log('newFavoriteMovieList before insertion', newFavoriteMoviesList);
@@ -116,8 +128,8 @@ class App extends Component {
     return (
       <React.Fragment>
         <Header
-          // loginUser={this.loginUser}
-          // logoutUser={this.logoutUser}
+          loginUser={this.loginUser}
+          logoutUser={this.logoutUser}
           isAuthenticated={isAuthenticated}
         />
         {this.state.error ? (
