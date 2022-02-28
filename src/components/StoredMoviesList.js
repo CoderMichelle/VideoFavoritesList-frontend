@@ -38,10 +38,10 @@ class StoredMoviesList extends Component {
   componentDidMount = async () => {
     try {
       let results = await this.makeAnyRequest('get', '/dbmovies');
-      console.log(
-        'here is the inital results from component did mount ========>>>>>>>>',
-        results.data
-      );
+      // console.log(
+      //   'here is the inital results from component did mount ========>>>>>>>>',
+      //   results.data
+      // );
       if (results && results.data.length > 0) {
         this.setState({
           moviesDB: results.data,
@@ -84,10 +84,10 @@ class StoredMoviesList extends Component {
   };
 
   setMovieForModal = movie => {
-    console.log(
-      'we are inside the setMovieForModal function inside of StoredMoviesList',
-      movie
-    );
+    // console.log(
+    //   'we are inside the setMovieForModal function inside of StoredMoviesList',
+    //   movie
+    // );
     if (movie) {
       this.setState({
         openModalToAddMovieComment: true,
@@ -128,21 +128,21 @@ class StoredMoviesList extends Component {
   };
 
   render() {
-    console.log(
-      'inside storedMoviesList.js - and here is state for moviesDB',
-      this.state.moviesDB
-    );
+    // console.log(
+    //   'inside storedMoviesList.js - and here is state for moviesDB',
+    //   this.state.moviesDB
+    // );
     let moviesComponentArray = [];
     if (this.state.moviesDB.length) {
       moviesComponentArray = this.state.moviesDB.map((movie, index) => {
         return (
           <Movie
-            key={`db-movie-${index}`}
+            addComment={this.props.addComment}
             remove={this.props.remove}
+            key={`db-movie-${index}`}
             deleteMovie={this.deleteMovie}
             movieObj={movie}
             included={true}
-            addComment={this.props.addComment}
             setMovieForModal={this.setMovieForModal}
             openModalToAddMovieComment={this.state.openModalToAddMovieComment}
           />
