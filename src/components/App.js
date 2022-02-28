@@ -3,19 +3,16 @@ import { Route, Routes } from 'react-router-dom';
 import { withAuth0 } from '@auth0/auth0-react';
 import '../style/App.css';
 
+import MoviesParentComponent from './MoviesParentComponent.js';
+
 import Header from './Header.js';
-import Form from './Form.js';
 import Footer from './Footer.js';
 import About from './About.js';
 import Alert from './Alert.js';
 import AboutMichellePannosch from './AboutMichellePannosch.js';
-import MovieResultsFromAPI from './MoviesList.js';
-import ApiLoadingModal from './Modal.js';
 import StoredMoviesList from './StoredMoviesList.js';
 
 import LoginModal from './LoginModal';
-
-
 import axios from 'axios';
 
 class App extends Component {
@@ -23,76 +20,76 @@ class App extends Component {
     super(props);
     this.state = {
       loginModal: true,
-      searchInput: '',
       error: false,
       errorMessage: '',
-      loading: false,
-      showModal: false,
-      saving2List: false,
       hasSearched: false,
       resultsFromServer: [],
       status: null,
-      user: null,
       movieResultsShowing: false,
-      myFavoriteMoviesList: [
-        { title: 'firstSampleObject', hereIsFirstSampleObj: true }
-      ]
+      moviesDB: [],
+      user: null,
     };
   }
 
-  hoistInputFromMoviesForm = (inputfromform) => {
-    if (inputfromform === '') {
-      alert('Please enter a movie you d like to search for');
-    } else {
-      this.setState({
-        searchInput: inputfromform,
-        hasSearched: true,
-        error: false,
-        errorMessage: '',
-      });
-      this.apiCallTMDB(inputfromform);
+  retrieveJWTToken = async () => {
+    try {
+      let { getIdTokenClaims } = this.props.auth0;
+      let tokenClaims = await getIdTokenClaims();
+      let jwt = tokenClaims.__raw;
+      let config = {
+        headers: { Authorization: `Bearer ${jwt}` },
+        baseURL: process.env.REACT_APP_BACKEND_SERVER,
+      };
+      return config;
+    } catch (error) {
+      console.log(error);
+      this.hoistError(error);
     }
   };
 
-  apiCallTMDB = async (searchInput) => {
-    this.setState({ loading: true });
+  makeAnyRequest = async (method, url, obj = {}) => {
     try {
-      let resultsFromServer = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER}/movies?movieName=${searchInput}`);
-      // console.log('hurray we contacted the server and here is what she said:', resultsFromServer);
-      if (resultsFromServer.status === 200) {
-        this.setState({
-          resultsFromServer: resultsFromServer.data,
-          status: resultsFromServer.status
-        });
+      let config = await this.retrieveJWTToken();
+      config.method = method;
+      config.url = url;
+      config.data = obj;
+      const serverResponse = await axios(config);
+      if (serverResponse) {
+        return serverResponse;
       }
     } catch (error) {
-      console.log('we are inside of apiCallTMDB error catch');
-      this.setState({
-        error: true,
-        errorMessage: `There was an error contacting the server: ${error.message ? error.message : 'and the error message doesnt work either'}`
-      });
-    }
-    setTimeout(() => this.setState({ loading: false }), 1000);
-  };
-
-  toggleLoading = () => {
-    this.setState({ loading: !this.state.loading });
-  };
-
-  addToFavoriteMoviesLIST = movieObj => {
-    if (!this.state.myFavoriteMoviesList.includes(movieObj)) {
-      this.setState({
-        saving2List: true,
-        myFavoriteMoviesList: [...this.state.myFavoriteMoviesList, movieObj],
-      });
-      setTimeout(() => this.setState({ saving2List: false }), 3000);
+      console.log(error);
+      this.hoistError(error);
     }
   };
-  removeFromFavoriteMoviesLIST = movieObj => {
+
+  hoistError = error => {
+    this.setState({
+      error: true,
+      errorMessage: `There was an error: ${error}`,
+    });
+  };
+
+  hoistResultsFromAPI = resultsArray => {
+    this.setState({
+      error: false,
+      errorMessage: '',
+      resultsFromServer: resultsArray,
+    });
+  };
+  hoistResultsFromDB = resultsArray => {
+    this.setState({
+      error: false,
+      errorMessage: '',
+      moviesDB: resultsArray,
+    });
+  };
+
+  addComment = (comment, movieObj) => {
     let newFavoriteMoviesList = [...this.state.myFavoriteMoviesList];
-    newFavoriteMoviesList = newFavoriteMoviesList.filter(
-      item => item.title !== movieObj.title
-    );
+    let indexOfMovie = newFavoriteMoviesList.indexOf(movieObj);
+    let newMovieObj = { ...movieObj, comment: comment };
+    newFavoriteMoviesList[indexOfMovie] = newMovieObj;
     this.setState({ myFavoriteMoviesList: newFavoriteMoviesList });
   };
 
@@ -114,18 +111,8 @@ class App extends Component {
     this.setState({ user: null });
   };
 
-  addComment = (comment, movieObj) => {
-    let newFavoriteMoviesList = [...this.state.myFavoriteMoviesList];
-    console.log('newFavoriteMovieList before insertion', newFavoriteMoviesList);
-    let indexOfMovie = newFavoriteMoviesList.indexOf(movieObj);
-    let newMovieObj = { ...movieObj, comment: comment };
-    newFavoriteMoviesList[indexOfMovie] = newMovieObj;
-    console.log('newFavoriteMovieList after insertion', newFavoriteMoviesList);
-    this.setState({ myFavoriteMoviesList: newFavoriteMoviesList });
-  };
-
   render() {
-    const { isAuthenticated, user } = this.props.auth0;
+    const { isAuthenticated } = this.props.auth0;
     if (!isAuthenticated) {
       return (
         <LoginModal
@@ -147,36 +134,20 @@ class App extends Component {
             ''
           )}
           <Routes>
-            <Route path='/' element={
-              <React.Fragment>
-                <Form
-                  hoistInputFromMoviesForm={this.hoistInputFromMoviesForm}
-                  user={user}
-                />
-                {this.state.loading ? (
-                  <ApiLoadingModal
-                    openModal={this.openModal}
-                    closeModal={this.closeModal}
-                    modalHeaderText={'contacting IMDB'}
-                    modalLoadingText={'LOADING YOUR RESULTS'}
+            <Route
+              path='/'
+              element={
+                <>
+                  <MoviesParentComponent
+                    hoistResultsFromAPI={this.hoistResultsFromAPI}
+                    resultsFromServer={this.state.resultsFromServer}
+                    makeAnyRequest={this.makeAnyRequest}
+                    hoistResultsFromDB={this.hoistResultsFromDB}
+                    moviesDB={this.state.moviesDB}
                   />
-                ) : (
-                  ''
-                )}
-
-                {this.state.resultsFromServer.length > 0 ? (
-                  <MovieResultsFromAPI
-                    results={this.state.resultsFromServer}
-                    add={this.addToFavoriteMoviesLIST}
-                    saving2List={this.state.saving2List}
-                    openModal={this.openModal}
-                    closeModal={this.closeModal}
-                  />
-                ) : (
-                  ''
-                )}
-              </React.Fragment>
-            } />
+                </>
+              }
+            />
 
             <Route path='/about' element={<About />} />
 
@@ -186,10 +157,12 @@ class App extends Component {
               path='/MoviesList'
               element={
                 <StoredMoviesList
-                  list={this.state.myFavoriteMoviesList}
-                  add={this.addToFavoriteMoviesLIST}
-                  remove={this.removeFromFavoriteMoviesLIST}
+                  moviesDB={this.state.moviesDB}
                   addComment={this.addComment}
+                  hoistError={this.hoistError}
+                  makeAnyRequest={this.makeAnyRequest}
+                  retrieveJWTToken={this.retrieveJWTToken}
+                  hoistResultsFromDB={this.hoistResultsFromDB}
                 />
               }
             />
