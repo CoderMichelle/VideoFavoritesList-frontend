@@ -8,7 +8,7 @@ const AboutMichellePannosch = () => {
   return (
     <Container fluid='md' maxwidth='sm'>
       <h2>Hover over the image to learn more about Michelle</h2>
-      <section className='about-us-wrapper'>
+      <section className='about-Michelle-wrapper'>
         <div className='about-card-container'>
           <div className='about-card'>
             <div className='side Michelle_001'></div>

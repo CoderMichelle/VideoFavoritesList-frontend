@@ -1,44 +1,36 @@
 h1 {
   text-align: center;
-  font-size: 2rem;
-  margin: 1rem;
+  font-size: 4vw;
 }
 
 nav ul {
-  margin: 0;
+  margin: -3vw auto -3vw auto;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   list-style: none;
-  /* border-radius: 3px; */
 }
 
-nav ul li {
-  margin: 0 1rem;
+nav ul li a{
+  margin: 0 1vw;
   background-color: rgba(240, 230, 140, 0.5);
-  border: 2px solid darkslategrey;
-  border-radius: 15px;
-  /* padding: 1em; */
+  border: 0.2vw solid darkslategrey;
+  border-radius: 0.5vw;
+  padding: 1vw 1.5vw;
   text-align: center;
-  /* padding: 1rem 2rem; */
-  transition: all 3000ms ease-in-out;
-}
-
-nav ul li:hover {
-  background: linear-gradient(rgba(128, 0, 128, 0.5), rgba(240, 230, 140, 0.5));
-  color: white;
-  border: 2px solid darkgrey;
-}
-
-nav ul li a {
+  transition: all 300ms ease-in-out;
   font-family: 'Arial';
   text-decoration: none;
-  font-size: 1.2rem;
-  /* font-weight: bold; */
-  padding: 0;
+  white-space: nowrap;
+  font-size: 1.75vw;
+  box-shadow: 0 0.5vw 1vw 0 rgba(0, 0, 0, 0.2), 0 0.5vw 1vw 0 rgba(0, 0, 0, 0.19) !important;
+}
 
-  /* color: navy; */
+nav ul li a:hover {
+  background: linear-gradient(rgba(128, 0, 128, 0.5), rgba(240, 230, 140, 0.5));
+  border: 0.2vw solid rgb(63, 63, 63);
 }
 
 a:focus,
