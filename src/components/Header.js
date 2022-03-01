@@ -13,12 +13,15 @@ class Header extends Component {
           <h1>My All Times Favorite Movies LIST</h1>
           <ul>
             {this.props.isAuthenticated ? (
-              <LogoutButton className='logoutButton' logoutUser={this.props.logoutUser}
-                loginUser={this.props.loginUser} />
+              <li>
+                <LogoutButton className='logoutButton' logoutUser={this.props.logoutUser}
+                  loginUser={this.props.loginUser} />
+              </li>
             ) : (
-              <LoginButton className='commentBtnActive' />
+              <li>
+                <LoginButton className='commentBtnActive' />
+              </li>
             )}
-
             <li>
               <Link to='/'>Home</Link>
             </li>
