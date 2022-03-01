@@ -53,12 +53,14 @@ a:visited {
     border-radius: 50%;
   }  
   nav ul li {
-    margin: 1vw 0;
+    margin: 2vw 0;
+  }
+  nav ul li a {
+    font-size: 1em;
   }
 }
 @media only screen and (max-width: 400px) {
   nav ul {
     width: 380px;
-    background-color: blue;
   }
 }
