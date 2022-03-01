@@ -151,31 +151,31 @@ class StoredMoviesList extends Component {
     }
     return (
       <Container fluid>
-        <CardGroup>
-          <React.Fragment>
-            {this.state.moviesDB ? (
-              this.state.openModalToAddMovieComment ? (
-                <UpdateMovieModal
-                  updateMovie={this.updateMovie}
-                  selectedMovie={this.state.selectedMovie}
-                  openModal={() =>
-                    this.setState({ openModalToAddMovieComment: true })
-                  }
-                  closeModal={() =>
-                    this.setState({ openModalToAddMovieComment: false })
-                  }
-                />
-              ) : (
-                moviesComponentArray
-              )
+        <React.Fragment>
+          {this.state.moviesDB ? (
+            this.state.openModalToAddMovieComment ? (
+              <UpdateMovieModal
+                updateMovie={this.updateMovie}
+                selectedMovie={this.state.selectedMovie}
+                openModal={() =>
+                  this.setState({ openModalToAddMovieComment: true })
+                }
+                closeModal={() =>
+                  this.setState({ openModalToAddMovieComment: false })
+                }
+              />
             ) : (
-              <h3>
-                no movies in your LIST yet - go to home, search and click on add
-                movies button
-              </h3>
-            )}
-          </React.Fragment>
-        </CardGroup>
+              <CardGroup>
+                {moviesComponentArray}
+              </CardGroup>
+            )
+          ) : (
+            <h3>
+              no movies in your LIST yet - go to home, search and click on add
+              movies button
+            </h3>
+          )}
+        </React.Fragment>
       </Container>
     );
   }

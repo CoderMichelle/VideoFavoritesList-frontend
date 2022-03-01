@@ -51,14 +51,15 @@ input:last-of-type {
 }
 
 button {
-  padding: 1rem;
-  margin: 1rem auto;
-  font-size: 1rem;
+  padding: 1.5vw;
+  margin: 2vw auto;
+  font-size: 1.5vw;
   font-weight: bold;
-  /* background-color: rgb(228, 215, 248); */
   background-color: rgb(255, 223, 147);
   color: black;
-  border-radius: 10px;
+  border-radius: 1vw;
+  border: solid black 0.2vw;
+  box-shadow: 0 0.5vw 1vw 0 rgba(0, 0, 0, 0.2), 0 0.5vw 1vw 0 rgba(0, 0, 0, 0.19) !important;
   transition: all 400ms ease-in-out;
 }
 

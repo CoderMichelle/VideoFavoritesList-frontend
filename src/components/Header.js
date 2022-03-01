@@ -23,13 +23,13 @@ class Header extends Component {
               <Link to='/'>Home</Link>
             </li>
             <li>
-              <Link to='about'>about My Favorite Movies LIST APP</Link>
+              <Link to='about'>about this APP</Link>
             </li>
             <li>
-              <Link to='aboutMichellePannosch'>About Michelle Pannosch</Link>
+              <Link to='aboutMichellePannosch'>about Michelle Pannosch</Link>
             </li>
             <li>
-              <Link to='MoviesList'>My Favorite Movies LIST</Link>
+              <Link to='MoviesList'>my Favorite Movies LIST</Link>
             </li>
           </ul>
         </nav>
